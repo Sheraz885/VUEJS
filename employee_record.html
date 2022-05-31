@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <!-- Bootstrap CSS 4.3.1 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- VueJS -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<style>
+ html,
+      body {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+      }
+      .header-menu,
+      footer {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .header-menu {
+        justify-content: flex-start;
+        height: 60px;
+        background: #1c87c9;
+        color: #fff;
+      }
+      a{
+        color: white;
+      }
+      h2 {
+        margin: 0 0 8px;
+      }
+      ul li {
+        display: inline-block;
+        padding: 0 10px;
+        list-style: none;
+      }
+      aside {
+        flex: 0.4;
+        height: 165px;
+        padding-left: 15px;
+        border-left: 1px solid #666;
+      }
+      div {
+        flex: 1;
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+      footer {
+        text-align: center;
+        padding-top: 32px;
+     
+        background: #ccc;
+
+      }
+  </style>
+</head>
+<body>
+  
+  <header class="header-menu">
+    <nav>
+      <ul>
+        <a href="user_data.html";> <li>User</li></a>
+        <a href="employee_record.html";> <li>Employee</li></a>
+        <li><input type="text" name="daterange" value="01/01/2018 - 01/15/2018" /></li>
+        <script>
+          $(function() {
+            $('input[name="daterange"]').daterangepicker({
+              opens: 'left'
+            }, function(start, end, label) {
+              console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+          });
+          </script>
+      </ul>
+    </nav>
+  </header>
+  <div class="container mt-4 overflow-auto" id="app">
+
+    <table class="table table-bordered">
+      <thead>
+    
+          <tr>
+            <td>
+              
+
+            </td>
+            <td style="text-align: center; font-size: 20px;" colspan="7"><b>User Record</b></td>
+          </tr>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Date From</th>
+          <th scope="col">Date To</th>
+          <th scope="col">Email</th>
+          <th scope="col">Username</th>
+
+          <th scope="col">City</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user, index in users">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ user.name }}</td>
+          <td>{{ user.date_from }}</td>
+          <td>{{ user.date_to }}</td>
+          <td>{{ user.email.toLowerCase() }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.address.city }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer>
+    <small style="text-align: center;">Company © 14digital. All rights reserved.</small>
+  </footer>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        users: []
+      },
+      mounted: function() {
+        axios.get('user.json')
+            .then(response => {
+              this.users = response.data;
+              console.log(response);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+      }
+    })
+  </script>
+</body>
+</html>
